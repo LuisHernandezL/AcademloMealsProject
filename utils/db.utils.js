@@ -9,7 +9,7 @@ const db = new Sequelize({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
   logging: false,
-  database: process.env.DB,
+  database: 'academloMealsDB',
 });
 
 //FALTAN CONFIGURACIONES PARA HEROKU
