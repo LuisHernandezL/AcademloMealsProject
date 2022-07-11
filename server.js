@@ -1,5 +1,8 @@
+const dotenv = require('dotenv');
+
 const { app } = require('./app');
 const { db } = require('./utils/db.utils');
+dotenv.config({ path: './config.env' });
 
 //server auth
 db.authenticate()
@@ -15,6 +18,6 @@ db.sync()
   })
   .catch((e) => console.log(e));
 
-app.listen(4000, () => {
+app.listen(process.env.PORT, () => {
   console.log('Server On');
 });
