@@ -9,10 +9,12 @@ const path = require('path');
 //Routers
 const { restaurantRouter } = require('./routes/restaurants.routes');
 const { usersRouter } = require('./routes/users.routes');
+const { mealsRouter } = require('./routes/meals.routes');
 
 //Global error controller
+const { globalErrorHandler } = require('./controllers/error.controllers');
 //Utils
-const { AppError } = './utils/appError.utils.js';
+const { AppError } = require('./utils/appError.utils.js');
 
 //init app
 const app = express();
@@ -44,6 +46,7 @@ if (process.env.NODE_ENV === 'development') {
 //endpoints
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/restaurants', restaurantRouter);
+app.use('/api/v1/meals', mealsRouter);
 
 //Handle incoming unknown routes to the server
 app.all('*', (req, res, next) => {
@@ -56,6 +59,6 @@ app.all('*', (req, res, next) => {
 });
 
 //GobalErrorHandler
-/* app.use(globalErrorHandler); */
+app.use(globalErrorHandler);
 
 module.exports = { app };

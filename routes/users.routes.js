@@ -18,8 +18,9 @@ const {
 } = require('../middlewares/auth.middleware');
 const {
   createUserValidators,
-  userExist,
 } = require('../middlewares/validations.middleware');
+
+const { userExist } = require('../middlewares/userExist.middleware');
 
 //Endpoints
 usersRouter.post('/signup', createUserValidators, createUser);
