@@ -93,7 +93,7 @@ const getAllUserOrders = catchAsync(async (req, res, next) => {
 });
 const getUserOrderById = catchAsync(async (req, res, next) => {
   const { sessionUser } = req;
-  const { id } = req.body;
+  const { id } = req.params;
   const orders = await Orders.findAll({
     where: { id },
     order: [['id', 'ASC']],

@@ -1,24 +1,30 @@
-const express = require('express')
+const express = require('express');
 
-const mealsRouter = express.Router()
+const mealsRouter = express.Router();
 
-//utils
-const { mealExist } = require('../middlewares/mealExist.middleware')
+//Middleware
+const { mealExist } = require('../middlewares/mealExist.middleware');
+const { protectSession } = require('../middlewares/auth.middleware');
+const {
+  restaurantExist,
+} = require('../middlewares/restaurantExist.middleware');
 
 const {
-    createMeal,
-    allMeals,
-    mealsById,
-    updateMeal,
-    deletMeal
-} = require('../controllers/meals.controllers')
+  createMeal,
+  allMeals,
+  mealsById,
+  updateMeal,
+  deletMeal,
+} = require('../controllers/meals.controllers');
 
-mealsRouter.get('/', allMeals)
-mealsRouter.get('/:id', mealsById)
+mealsRouter.get('/', allMeals);
+mealsRouter.get('/:id', mealExist, mealsById);
 
 //protected End Points
-mealsRouter.post('/:id', createMeal)
-mealsRouter.patch('/:id', updateMeal)
-mealsRouter.delete('/:id', deletMeal)
 
-module.exports = { mealsRouter }
+mealsRouter.use(protectSession);
+mealsRouter.post('/:id', restaurantExist, createMeal);
+mealsRouter.patch('/:id', mealExist, updateMeal);
+mealsRouter.delete('/:id', mealExist, deletMeal);
+
+module.exports = { mealsRouter };
