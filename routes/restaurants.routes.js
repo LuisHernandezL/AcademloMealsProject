@@ -11,6 +11,7 @@ const {
   protectSession,
   verifyUserRol,
   verifyUserAccount,
+  verifySameSession,
 } = require('../middlewares/auth.middleware');
 
 //constrollers
@@ -42,15 +43,13 @@ restaurantRouter.post('/reviews/:restaurantId', newReviewRestaurant);
 restaurantRouter.patch(
   '/reviews/:id',
   reviewExist,
-  verifyUserAccount,
-  verifyUserRol,
+  verifySameSession,
   updateReview
 );
 restaurantRouter.delete(
   '/reviews/:id',
   reviewExist,
-  verifyUserAccount,
-  verifyUserRol,
+  verifySameSession,
   deleteReview
 );
 
@@ -58,7 +57,7 @@ restaurantRouter.delete(
 restaurantRouter
   .use('/:id', restaurantExist)
   .route('/:id')
-  .patch(verifyUserAccount, verifyUserRol, updateRestaurant)
-  .delete(verifyUserAccount, verifyUserRol, deletRestaurant);
+  .patch(verifyUserRol, updateRestaurant)
+  .delete(verifyUserRol, deletRestaurant);
 
 module.exports = { restaurantRouter };

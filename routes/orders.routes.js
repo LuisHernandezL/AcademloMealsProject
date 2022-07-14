@@ -10,14 +10,25 @@ const {
   cancelOrder,
 } = require('../controllers/orders.controllers');
 //middlewares
-const { protectSession } = require('../middlewares/auth.middleware');
+const {
+  protectSession,
+  verifySameSession,
+} = require('../middlewares/auth.middleware');
+const { mealExist } = require('../middlewares/mealExist.middleware');
+const { orderExist } = require('../middlewares/orderExist.middleware');
+const {
+  restaurantExist,
+} = require('../middlewares/restaurantExist.middleware');
 
 //endpoints
 
 ordersRouter.use(protectSession);
 
-ordersRouter.post('/', createAOrder);
+ordersRouter.post('/', mealExist, restaurantExist, createAOrder);
 ordersRouter.get('/me', getAllOrders);
-ordersRouter.route('/:id').patch(editOrderStatus).delete(cancelOrder);
+ordersRouter
+  .route('/:id')
+  .patch(orderExist, verifySameSession, editOrderStatus)
+  .delete(orderExist, verifySameSession, cancelOrder);
 
 module.exports = { ordersRouter };

@@ -4,8 +4,8 @@ const { catchAsync } = require('../utils/catchAsync.utils');
 
 const mealExist = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-
-  const meal = await Meals.findOne({ where: { id } });
+  const { mealId } = req.body;
+  const meal = await Meals.findOne({ where: { id: id || mealId } });
 
   if (!meal) {
     return next(new AppError('Meal not found', 403));

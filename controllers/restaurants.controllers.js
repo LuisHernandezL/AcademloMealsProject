@@ -4,6 +4,7 @@ const { Restaurants } = require('../models/restaurants.model');
 
 //utils
 const { catchAsync } = require('../utils/catchAsync.utils');
+const { AppError } = require('../utils/appError.utils');
 
 const newRestaurant = catchAsync(async (req, res, next) => {
   const { name, address, rating } = req.body;
@@ -21,7 +22,18 @@ const newRestaurant = catchAsync(async (req, res, next) => {
 });
 
 const allRestaurant = catchAsync(async (req, res, next) => {
-  const data = await Restaurants.findAll({ where: { status: 'active' } });
+  const data = await Restaurants.findAll({
+    where: { status: 'active' },
+    attributes: ['name', 'address', 'rating', 'id', 'status'],
+    include: [
+      {
+        model: Reviews,
+        required: false,
+        where: { status: 'active' },
+        attributes: ['comment', 'rating'],
+      },
+    ],
+  });
 
   res.status(200).json({
     data,
@@ -60,6 +72,15 @@ const newReviewRestaurant = catchAsync(async (req, res, next) => {
   const { sessionUser } = req;
   const { comment, rating } = req.body;
   const { restaurantId } = req.params;
+
+  const rest = await Restaurants.findOne({
+    where: { id: restaurantId, status: 'active' },
+  });
+  if (!rest) {
+    return next(
+      new AppError('This restaurant is not available at this moment', 400)
+    );
+  }
 
   const newReview = await Reviews.create({
     userId: sessionUser.id,

@@ -39,12 +39,22 @@ const protectSession = catchAsync(async (req, res, next) => {
 });
 
 const verifyUserAccount = (req, res, next) => {
-  const { sessionUser, user } = req;
+  const { sessionUser, user, review } = req;
 
-  if (sessionUser.id !== user.id || req.userId) {
+  if (sessionUser.id !== user.id) {
     return next(new AppError('You do not own this account', 403));
   }
 
+  next();
+};
+
+const verifySameSession = (req, res, next) => {
+  const { sessionUser, order } = req;
+  console.log(order);
+
+  if (sessionUser.id !== order.userId) {
+    return next(new AppError('You do not have access for this action', 403));
+  }
   next();
 };
 
@@ -60,4 +70,9 @@ const verifyUserRol = (req, res, next) => {
   next();
 };
 
-module.exports = { protectSession, verifyUserAccount, verifyUserRol };
+module.exports = {
+  protectSession,
+  verifyUserAccount,
+  verifyUserRol,
+  verifySameSession,
+};

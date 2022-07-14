@@ -11,7 +11,6 @@ const reviewExist = catchAsync(async (req, res, next) => {
     return next(new AppError('Review not found', 403));
   }
 
-  req.userId = review.userId;
   req.review = review;
 
   next();
