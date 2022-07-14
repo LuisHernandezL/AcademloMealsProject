@@ -19,6 +19,9 @@ const { orderExist } = require('../middlewares/orderExist.middleware');
 const {
   restaurantExist,
 } = require('../middlewares/restaurantExist.middleware');
+const {
+  createOrderValidator,
+} = require('../middlewares/validations.middleware');
 
 //endpoints
 

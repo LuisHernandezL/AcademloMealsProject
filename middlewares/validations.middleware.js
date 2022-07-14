@@ -46,8 +46,24 @@ const createMealsValidators = [
     .withMessage('This field must containt a number'),
 ];
 
+const createOrderValidator = [
+  body('mealId')
+    .notEmpty()
+    .withMessage('This field cannot be empty')
+    .isNumeric()
+    .withMessage('This field must containt a number'),
+  ,
+  body('quantity')
+    .notEmpty()
+    .withMessage('This field cannot be empty')
+    .isNumeric()
+    .withMessage('This field must containt a number'),
+  checkResult,
+];
+
 module.exports = {
   createUserValidators,
   createMealsValidators,
   createRestaurantValidators,
+  createOrderValidator,
 };
