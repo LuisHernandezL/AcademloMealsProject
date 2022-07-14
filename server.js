@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 
 const { app } = require('./app');
+const { initModels } = require('./models/initModels');
 const { db } = require('./utils/db.utils');
 dotenv.config({ path: './config.env' });
 
@@ -10,6 +11,9 @@ db.authenticate()
     console.log('db auth');
   })
   .catch((e) => console.log(e));
+
+//Models relations
+initModels();
 
 //server sync
 db.sync()

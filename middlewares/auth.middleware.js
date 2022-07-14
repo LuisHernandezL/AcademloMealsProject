@@ -41,11 +41,23 @@ const protectSession = catchAsync(async (req, res, next) => {
 const verifyUserAccount = (req, res, next) => {
   const { sessionUser, user } = req;
 
-  if (sessionUser.id !== user.id) {
+  if (sessionUser.id !== user.id || req.userId) {
     return next(new AppError('You do not own this account', 403));
   }
 
   next();
 };
 
-module.exports = { protectSession, verifyUserAccount };
+const verifyUserRol = (req, res, next) => {
+  const { sessionUser } = req;
+
+  if (sessionUser.rol !== 'admin') {
+    return next(
+      new AppError('you dont have permission to complete this action', 403)
+    );
+  }
+
+  next();
+};
+
+module.exports = { protectSession, verifyUserAccount, verifyUserRol };

@@ -1,19 +1,20 @@
-const { Reviews } = require('../models/reviews.model')
-const { AppError } = require('../utils/appError.utils')
-const { catchAsync} = require('../utils/catchAsync.utils')
+const { Reviews } = require('../models/reviews.model');
+const { AppError } = require('../utils/appError.utils');
+const { catchAsync } = require('../utils/catchAsync.utils');
 
-const reviewExist = catchAsync(async(req, res, next) => {
-    const { id } = req.params
+const reviewExist = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-    const review = await Reviews.findOne({where: { id }})
+  const review = await Reviews.findOne({ where: { id } });
 
-    if (!review) {
-        return next(new AppError('Review not found', 403))
-    }
+  if (!review) {
+    return next(new AppError('Review not found', 403));
+  }
 
-    req.review = review
+  req.userId = review.userId;
+  req.review = review;
 
-    next()
-})
+  next();
+});
 
-module.exports = { reviewExist }
+module.exports = { reviewExist };

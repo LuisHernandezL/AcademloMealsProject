@@ -4,7 +4,10 @@ const mealsRouter = express.Router();
 
 //Middleware
 const { mealExist } = require('../middlewares/mealExist.middleware');
-const { protectSession } = require('../middlewares/auth.middleware');
+const {
+  protectSession,
+  verifyUserRol,
+} = require('../middlewares/auth.middleware');
 const {
   restaurantExist,
 } = require('../middlewares/restaurantExist.middleware');
@@ -17,6 +20,7 @@ const {
   deletMeal,
 } = require('../controllers/meals.controllers');
 
+//incluir info del rest
 mealsRouter.get('/', allMeals);
 mealsRouter.get('/:id', mealExist, mealsById);
 
@@ -24,7 +28,7 @@ mealsRouter.get('/:id', mealExist, mealsById);
 
 mealsRouter.use(protectSession);
 mealsRouter.post('/:id', restaurantExist, createMeal);
-mealsRouter.patch('/:id', mealExist, updateMeal);
-mealsRouter.delete('/:id', mealExist, deletMeal);
+mealsRouter.patch('/:id', mealExist, verifyUserRol, updateMeal);
+mealsRouter.delete('/:id', mealExist, verifyUserRol, deletMeal);
 
 module.exports = { mealsRouter };
