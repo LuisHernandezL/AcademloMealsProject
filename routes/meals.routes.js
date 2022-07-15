@@ -11,7 +11,6 @@ const {
 const {
   restaurantExist,
 } = require('../middlewares/restaurantExist.middleware');
-
 const {
   createMeal,
   allMeals,
@@ -19,15 +18,19 @@ const {
   updateMeal,
   deletMeal,
 } = require('../controllers/meals.controllers');
+const {
+  createMealsValidators,
+} = require('../middlewares/validations.middleware');
 
-//incluir info del rest
+//endpoints
+
 mealsRouter.get('/', allMeals);
 mealsRouter.get('/:id', mealExist, mealsById);
 
 //protected End Points
 
 mealsRouter.use(protectSession);
-mealsRouter.post('/:id', restaurantExist, createMeal);
+mealsRouter.post('/:id', createMealsValidators, restaurantExist, createMeal);
 mealsRouter.patch('/:id', mealExist, verifyUserRol, updateMeal);
 mealsRouter.delete('/:id', mealExist, verifyUserRol, deletMeal);
 

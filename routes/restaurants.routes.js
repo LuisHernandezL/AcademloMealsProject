@@ -13,6 +13,9 @@ const {
   verifyUserAccount,
   verifySameSession,
 } = require('../middlewares/auth.middleware');
+const {
+  createRestaurantValidators,
+} = require('../middlewares/validations.middleware');
 
 //constrollers
 const {
@@ -25,7 +28,6 @@ const {
   updateReview,
   deleteReview,
 } = require('../controllers/restaurants.controllers');
-const { userExist } = require('../middlewares/userExist.middleware');
 
 //end points
 //restaurants
@@ -36,7 +38,7 @@ restaurantRouter.get('/:id', restaurantExist, restaurantById);
 
 restaurantRouter.use(protectSession);
 
-restaurantRouter.post('/', newRestaurant);
+restaurantRouter.post('/', createRestaurantValidators, newRestaurant);
 
 //restaurants reviews
 restaurantRouter.post('/reviews/:restaurantId', newReviewRestaurant);

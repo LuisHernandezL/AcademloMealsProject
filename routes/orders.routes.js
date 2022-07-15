@@ -27,7 +27,13 @@ const {
 
 ordersRouter.use(protectSession);
 
-ordersRouter.post('/', mealExist, restaurantExist, createAOrder);
+ordersRouter.post(
+  '/',
+  createOrderValidator,
+  mealExist,
+  restaurantExist,
+  createAOrder
+);
 ordersRouter.get('/me', getAllOrders);
 ordersRouter
   .route('/:id')
